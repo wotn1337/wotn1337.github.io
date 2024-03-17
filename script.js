@@ -1,14 +1,40 @@
 import { WORDS } from "./words.js";
 
 const green = "#95de64";
-const yellow = "#fff566";
+const white = "white";
 const gray = "#d9d9d9";
+const pink = "#ff85c0";
+
+const toast = (message, type) => {
+  toastr[type](message, undefined, {
+    toastClass: 'notification toast', 
+  });
+}
 
 const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
 let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+let hintText = '';
+const urlParams = new URLSearchParams(window.location.search);
+const wordIndex = urlParams.get('word');
+const words = [
+  {word: "лампа", hint: 'Возможно, это светиться'},
+  {word: "вилка", hint: 'Помогает покушать'},
+  {word: "трусы", hint: 'у меня их почти миллион'},
+  {word: "ключи", hint: 'У меня всегда с собой, а ты никогда не берешь. Возможно, кстати, множественное число'},
+  {word: "доска", hint: 'Там полно бунбумсиков'},
+  {word: "книга", hint:'Там многа букав'},
+  {word: "алиса", hint: 'Возможно, это имя собственное'},
+  {word: "носок", hint: 'Их по одному не носят'},
+  {word: "карта", hint: 'Тинькофф или Сбер или Синара или Альфа'}, 
+  {word: "колье", hint: 'У тебя пока этого нет'}
+];
+if (wordIndex !== undefined && wordIndex !== null) {
+  rightGuessString = words[+wordIndex].word;
+  hintText = words[+wordIndex].hint;
+}
 
 console.log(rightGuessString);
 
@@ -37,11 +63,17 @@ function shadeKeyBoard(letter, color) {
         return;
       }
 
-      if (oldColor === yellow && color !== green) {
+      if (oldColor === white && color !== green) {
         return;
       }
 
       elem.style.backgroundColor = color;
+      elem.style.borderColor = color;
+      if (color === white) {
+        elem.style.color = pink;
+      } else {
+        elem.style.color = white;
+      }
       break;
     }
   }
@@ -66,12 +98,12 @@ function checkGuess() {
   }
 
   if (guessString.length != 5) {
-    toastr.error("Not enough letters!");
+    toast("Букав маловато!", 'error');
     return;
   }
 
   if (!WORDS.includes(guessString)) {
-    toastr.error("Word not in list!");
+    toast("Нет такого слова :(", 'error');
     return;
   }
 
@@ -93,7 +125,7 @@ function checkGuess() {
     //checking right letters
     for (let j = 0; j < 5; j++) {
       if (rightGuess[j] == currentGuess[i]) {
-        letterColor[i] = yellow;
+        letterColor[i] = white;
         rightGuess[j] = "#";
       }
     }
@@ -107,12 +139,16 @@ function checkGuess() {
       animateCSS(box, "flipInX");
       //shade box
       box.style.backgroundColor = letterColor[i];
+      box.style.borderColor = letterColor[i];
+      if (letterColor[i] === white) {
+        box.style.color = pink;
+      }
       shadeKeyBoard(guessString.charAt(i) + "", letterColor[i]);
     }, delay);
   }
 
   if (guessString === rightGuessString) {
-    toastr.success("Ну ты капец умная!");
+    toast("Ну ты капец умная!", 'success');
     guessesRemaining = 0;
     return;
   } else {
@@ -121,8 +157,16 @@ function checkGuess() {
     nextLetter = 0;
 
     if (guessesRemaining === 0) {
-      toastr.error("You've run out of guesses! Game over!");
-      toastr.info(`The right word was: "${rightGuessString}"`);
+      toast(`Правильное слово: "${rightGuessString}"`, 'info');
+      toast("Ну капец! Попытки закончились :(", 'error');
+    } else if (guessesRemaining === 4) {
+      const hintLink = document.querySelector('.hint-link');
+      hintLink.style.display = 'block';
+      hintLink.addEventListener('click', () => {
+        const hint = document.querySelector('.hint');
+        hint.innerHTML = hintText;
+        hint.style.display = 'block';
+      })
     }
   }
 }
@@ -194,7 +238,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   }
   let key = target.textContent;
 
-  if (key === "<") {
+  if (key === "←") {
     key = "Backspace";
   }
 

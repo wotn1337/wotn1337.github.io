@@ -1,10 +1,19 @@
+* {
+  touch-action: manipulation;
+}
+
 body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  background-color: #ffd6e7;
+  --pink: #ff85c0;
+  --dark-pink: #520339;
+  --magenta: #eb2f96;
+  --gray: #d9d9d9;
+  background-color: var(--pink);
 }
 
 h1 {
  text-align: center;
+ color: white;
 }
 
 #game-board {
@@ -14,8 +23,8 @@ h1 {
 }
 
 .letter-box {
-  border: 2px solid gray;
-  border-radius: 3px;
+  border: 2px solid var(--gray);
+  border-radius: 8px;
   margin: 2px;
   font-size: 2.5rem;
   font-weight: 700;
@@ -25,11 +34,26 @@ h1 {
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  background-color: white;
+  color: white;
 }
 
 .letter-row {
   display: flex;
+}
+
+.hint-link {
+  display: block;
+  text-align: center;
+  margin: 10px 0;
+  font-size: 18px;
+  display: none;
+  color: white;
+}
+
+.hint {
+  text-align: center;
+  display: none;
+  color: white;
 }
 
 #keyboard-cont {
@@ -41,10 +65,6 @@ h1 {
 
 #keyboard-cont div {
   display: flex;
-}
-
-.second-row {
-  margin: 0.5rem 0;
 }
 
 .row {
@@ -67,8 +87,32 @@ h1 {
   padding: 0.5rem;
   cursor: pointer;
   text-transform: uppercase;
-  border: 1px solid #8c8c8c;
-  border-radius: 3px;
-  background-color: #ffadd2;
-  color: black;
+  border: 1px solid var(--gray);
+  border-radius: 8px;
+  background-color: var(--pink);
+  color: white;
+}
+
+#toast-container {
+  width: calc(100% - 24px);
+}
+
+#toast-container > .notification {
+  width: 100%;
+  background-color: white;
+  opacity: 1;
+  color: var(--pink);
+  background-size: 25px;
+}
+
+#toast-container > .notification.toast-error {
+  background-image: url("./error-heart.png") !important;
+}
+
+#toast-container > .notification.toast-info {
+  background-image: url("./info-heart.png") !important;
+}
+
+#toast-container > .notification.toast-success {
+  background-image: url("./success-heart.png") !important;
 }
