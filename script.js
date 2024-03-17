@@ -19,6 +19,7 @@ let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
 let hintText = '';
 const urlParams = new URLSearchParams(window.location.search);
 const wordIndex = urlParams.get('word');
+const hasWordIndex = wordIndex !== undefined && wordIndex !== null;
 const words = [
   {word: "лампа", hint: 'Возможно, это светиться'},
   {word: "вилка", hint: 'Помогает покушать'},
@@ -31,7 +32,7 @@ const words = [
   {word: "карта", hint: 'Тинькофф или Сбер или Синара или Альфа'}, 
   {word: "колье", hint: 'У тебя пока этого нет'}
 ];
-if (wordIndex !== undefined && wordIndex !== null) {
+if (hasWordIndex) {
   rightGuessString = words[+wordIndex].word;
   hintText = words[+wordIndex].hint;
 }
@@ -159,7 +160,7 @@ function checkGuess() {
     if (guessesRemaining === 0) {
       toast(`Правильное слово: "${rightGuessString}"`, 'info');
       toast("Ну капец! Попытки закончились :(", 'error');
-    } else if (guessesRemaining === 4 && words.map(w => w.word).includes(rightGuessString)) {
+    } else if (guessesRemaining === 4 && hasWordIndex) {
       const hintLink = document.querySelector('.hint-link');
       hintLink.style.display = 'block';
       hintLink.addEventListener('click', () => {
