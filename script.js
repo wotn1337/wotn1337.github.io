@@ -159,7 +159,7 @@ function checkGuess() {
     if (guessesRemaining === 0) {
       toast(`Правильное слово: "${rightGuessString}"`, 'info');
       toast("Ну капец! Попытки закончились :(", 'error');
-    } else if (guessesRemaining === 4) {
+    } else if (guessesRemaining === 4 && words.map(w => w.word).includes(rightGuessString)) {
       const hintLink = document.querySelector('.hint-link');
       hintLink.style.display = 'block';
       hintLink.addEventListener('click', () => {
