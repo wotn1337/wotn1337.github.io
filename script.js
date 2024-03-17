@@ -242,7 +242,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
     key = "Backspace";
   }
 
-  if (key === "↩") {
+  if (key === "✓") {
     key = "Enter";
   }
 
