@@ -241,8 +241,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   if (key === "←") {
     key = "Backspace";
   }
-
-  if (key === 'ENTER') {
+  if (key === 'enter') {
     key = "Enter";
   }
 
