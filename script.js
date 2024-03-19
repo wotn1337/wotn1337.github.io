@@ -1,6 +1,6 @@
 import { WORDS } from "./words.js";
 
-const green = "#95de64";
+const green = "rgb(149, 222, 100)";
 const white = "white";
 const gray = "#d9d9d9";
 const pink = "#ff85c0";
@@ -60,7 +60,9 @@ function shadeKeyBoard(letter, color) {
   for (const elem of document.getElementsByClassName("keyboard-button")) {
     if (elem.textContent === letter) {
       let oldColor = elem.style.backgroundColor;
+      console.debug(letter, oldColor, color);
       if (oldColor === green) {
+        console.debug(letter, "oldColor is green");
         return;
       }
 
