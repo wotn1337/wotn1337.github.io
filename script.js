@@ -5,9 +5,10 @@ const white = "white";
 const gray = "#d9d9d9";
 const pink = "#ff85c0";
 
-const toast = (message, type) => {
+const toast = (message, type, config) => {
   toastr[type](message, undefined, {
-    toastClass: 'notification toast', 
+    toastClass: 'notification toast',
+    ...config, 
   });
 }
 
@@ -60,9 +61,7 @@ function shadeKeyBoard(letter, color) {
   for (const elem of document.getElementsByClassName("keyboard-button")) {
     if (elem.textContent === letter) {
       let oldColor = elem.style.backgroundColor;
-      console.debug(letter, oldColor, color);
       if (oldColor === green) {
-        console.debug(letter, "oldColor is green");
         return;
       }
 
@@ -160,7 +159,7 @@ function checkGuess() {
     nextLetter = 0;
 
     if (guessesRemaining === 0) {
-      toast(`Правильное слово: "${rightGuessString}"`, 'info');
+      toast(`Правильное слово: "${rightGuessString}"`, 'info', {timeOut: 0});
       toast("Ну капец! Попытки закончились :(", 'error');
     } else if (guessesRemaining === 4 && hasWordIndex) {
       const hintLink = document.querySelector('.hint-link');
